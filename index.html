@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tropitok – Agencia TikTok</title>
+  <style>
+    :root{
+      --fucsia:#ff0050;
+      --turquesa:#00f5eb;
+      --negro:#000000;
+      --blanco:#ffffffff;
+      --gris-claro:#f8fafc;
+      --gris-medio:#64748b;
+      --gris-oscuro:#334155;
+      --sombra: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --sombra-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --gradiente: linear-gradient(135deg, var(--fucsia), var(--turquesa));
+      --gradiente-suave: linear-gradient(135deg, rgba(255,0,80,0.1), rgba(0,245,235,0.1));
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--blanco);
+      color: var(--negro);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ===== LAYOUT ===== */
+    .deck {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--blanco);
+    }
+    
+    .slides {
+      height: 100%;
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      padding: 90px 40px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: var(--blanco);
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: var(--negro);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+    }
+    
+    .logo-space {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-space img {
+      height: 85px;
+      width: auto;
+      object-fit: contain;
+    }
+    
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    }
+    
+    .lang-toggle button {
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--blanco);
+      transition: all 0.2s ease;
+    }
+    
+    .lang-toggle button.active {
+      background: var(--gradiente);
+      color: var(--blanco);
+      box-shadow: var(--sombra);
+    }
+    
+    .fullscreen-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      margin-left: 12px;
+    }
+    
+    .fullscreen-btn:hover {
+      background: var(--gradiente);
+    }
+    
+    .fullscreen-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--blanco);
+      transition: all 0.2s ease;
+    }
+
+    /* ===== TIPOGRAFÍA ===== */
+    .hero-title {
+      font-family: "Arial Black", Impact, "Franklin Gothic Heavy", system-ui;
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.1;
+      text-align: center;
+      margin: 0 0 16px;
+      color: var(--fucsia);
+      max-width: 900px;
+    }
+    
+    .hero-subtitle {
+      font-family: "Segoe UI Semibold", "Segoe UI", system-ui;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--negro);
+      text-align: center;
+      margin: 0;
+      max-width: 700px;
+    }
+    
+    .section-title {
+      font-family: "Arial Black", Impact, "Franklin Gothic Heavy", system-ui;
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.2;
+      text-align: center;
+      margin: 0 0 16px;
+      color: var(--negro);
+      max-width: 800px;
+    }
+    
+    .section-subtitle {
+      font-family: "Segoe UI Semibold", "Segoe UI", system-ui;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--negro);
+      text-align: center;
+      margin: 0 0 20px;
+      max-width: 750px;
+    }
+
+    /* ===== CARDS Y LAYOUTS ===== */
+    .grid {
+      display: grid;
+      gap: 16px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    
+    .card {
+      background: var(--blanco);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--sombra);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradiente);
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--sombra-hover);
+    }
+    
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradiente-suave);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    
+    .card-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--fucsia);
+    }
+    
+    .card h3 {
+      font-family: "Franklin Gothic Medium", "Segoe UI Semibold", system-ui;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: var(--negro);
+      line-height: 1.3;
+    }
+    
+    .card p {
+      font-family: "Segoe UI", system-ui;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--negro);
+      margin: 0 0 12px;
+      line-height: 1.4;
+    }
+    
+    .benefits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .benefits li {
+      position: relative;
+      padding-left: 20px;
+      margin: 4px 0;
+      font-family: "Segoe UI", system-ui;
+      font-size: 13px;
+      color: var(--negro);
+      line-height: 1.3;
+    }
+    
+    .benefits li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--fucsia);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    
+    /* ===== SPECIAL CARDS ===== */
+    .highlight-card {
+      background: var(--blanco);
+      border: 2px solid rgba(255, 0, 80, 0.1);
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .feature-item {
+      background: rgba(0, 245, 235, 0.1);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      transition: all 0.2s ease;
+      border: 2px solid rgba(0, 245, 235, 0.2);
+    }
+    
+    .feature-item:hover {
+      background: rgba(0, 245, 235, 0.2);
+      transform: translateY(-4px);
+      box-shadow: var(--sombra-hover);
+    }
+    
+    .feature-item h4 {
+      font-family: "Franklin Gothic Medium", "Segoe UI Semibold", system-ui;
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: var(--negro);
+      line-height: 1.2;
+    }
+    
+    .feature-item p {
+      font-family: "Segoe UI", system-ui;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--negro);
+      margin: 0;
+      line-height: 1.3;
+      opacity: 0.8;
+    }
+
+    /* ===== NAVEGACIÓN ===== */
+    .nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--blanco);
+      padding: 8px 16px;
+      border-radius: 25px;
+      box-shadow: var(--sombra);
+      z-index: 90;
+    }
+    
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: var(--gris-claro);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-btn:hover {
+      background: var(--gradiente);
+    }
+    
+    .nav-btn:hover svg {
+      stroke: var(--blanco);
+    }
+    
+    .nav-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--gris-medio);
+      transition: stroke 0.2s ease;
+    }
+    
+    .progress {
+      width: 80px;
+      height: 4px;
+      background: var(--gris-claro);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--gradiente);
+      width: 20%;
+      transition: width 0.6s ease;
+    }
+    
+    .slide-counter {
+      font-size: 0.75rem;
+      color: var(--gris-medio);
+      font-weight: 600;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* ===== DECORACIONES ===== */
+    .bg-decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .bg-decoration::before,
+    .bg-decoration::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: var(--gradiente-suave);
+      filter: blur(100px);
+      opacity: 0.3;
+    }
+    
+    .bg-decoration::before {
+      width: 400px;
+      height: 400px;
+      top: -200px;
+      right: -200px;
+    }
+    
+    .bg-decoration::after {
+      width: 300px;
+      height: 300px;
+      bottom: -150px;
+      left: -150px;
+    }
+
+    /* ===== PORTADA SPECIFIC ===== */
+    .header.hidden {
+      display: none !important;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .slide { padding: 100px 40px 80px; }
+      .hero-title { font-size: 48px; }
+      .section-title { font-size: 44px; }
+      .hero-subtitle { font-size: 24px; }
+      .section-subtitle { font-size: 20px; }
+      .card h3 { font-size: 20px; }
+      .card p { font-size: 15px; }
+      .feature-item h4 { font-size: 16px; }
+      .feature-item p { font-size: 13px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+    
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .slide { padding: 100px 20px 80px; }
+      .hero-title { font-size: 42px; }
+      .section-title { font-size: 38px; }
+      .hero-subtitle { font-size: 22px; }
+      .section-subtitle { font-size: 18px; }
+      .card { padding: 20px; }
+      .card h3 { font-size: 18px; }
+      .card p { font-size: 14px; }
+      .benefits li { font-size: 14px; }
+      .feature-item h4 { font-size: 15px; }
+      .feature-item p { font-size: 12px; }
+    }
+
+    /* ===== ANIMACIONES ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes starShine {
+      0%, 100% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.4));
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
+      }
+    }
+    
+    .golden-star {
+      animation: starShine 2s ease-in-out infinite;
+      transition: all 0.3s ease;
+    }
+    
+    /* ===== LIQUID MORPHING BUTTON ===== */
+    .liquid-btn {
+      background: linear-gradient(45deg, #ff9a9e, #fecfef, #fecfef, #fad0c4);
+      border: none;
+      padding: 18px 35px;
+      border-radius: 50px;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      font-size: 16px;
+      font-family: 'Arial Black', system-ui;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .liquid-btn:hover {
+      border-radius: 20px;
+      padding: 20px 40px;
+      background: linear-gradient(45deg, #fad0c4, #fecfef, #fecfef, #ff9a9e);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(255, 154, 158, 0.4);
+    }
+
+    .liquid-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.6s ease;
+      z-index: 0;
+    }
+
+    .liquid-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .liquid-btn span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .slide > * {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    /* ===== PRINT ===== */
+    @media print {
+      .deck { height: auto; }
+      .slides { display: block; }
+      .slide { page-break-after: always; min-height: auto; }
+      .header, .nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-space">
+      <img src="tropitok_logo.png" alt="Tropitok">
+    </div>
+    <div style="display: flex; align-items: center;">
+      <div class="lang-toggle">
+        <button id="btn-es" class="active">ES</button>
+        <button id="btn-en">EN</button>
+      </div>
+      <button class="fullscreen-btn" id="fullscreen-btn" title="Pantalla completa">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
+          <path d="M3 16.2V21m0 0h4.8M3 21l6-6"/>
+          <path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/>
+          <path d="M3 7.8V3m0 0h4.8M3 3l6 6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="deck">
+    <div class="slides" id="slides">
+
+      <!-- SLIDE 1: PRESENTACIÓN -->
+      <section class="slide" style="background: var(--negro); padding: 0; justify-content: flex-start; align-items: stretch;">
+        <!-- Header específico para portada (sin logo) -->
+        <div style="position: absolute; top: 0; right: 0; height: 80px; display: flex; align-items: center; padding: 0 40px; z-index: 100;">
+          <div style="display: flex; align-items: center;">
+            <div class="lang-toggle">
+              <button id="btn-es-home" class="active">ES</button>
+              <button id="btn-en-home">EN</button>
+            </div>
+            <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa" style="margin-left: 12px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
+                <path d="M3 16.2V21m0 0h4.8M3 21l6-6"/>
+                <path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/>
+                <path d="M3 7.8V3m0 0h4.8M3 3l6 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div style="display: flex; width: 100%; height: 100vh; position: relative;">
+          <!-- Lado izquierdo - Texto -->
+          <div style="flex: 0.8; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 100px 40px 80px 80px; z-index: 2;">
+            <!-- Logo prominente -->
+            <div style="margin-bottom: 40px;">
+              <img src="tropitok_logo.png" alt="Tropitok" style="height: 120px; width: auto;">
+            </div>
+            
+            <div style="max-width: 600px;">
+              <h1 style="font-family: 'Arial Black', Impact, 'Franklin Gothic Heavy', system-ui; font-size: 44px; font-weight: 900; line-height: 1.1; margin: 0 0 20px; color: var(--blanco);" data-i18n="hero-title-es">
+                Transformamos Creadores en 
+                <span style="color: var(--fucsia);">Marcas Exitosas</span>
+              </h1>
+              <h1 style="font-family: 'Arial Black', Impact, 'Franklin Gothic Heavy', system-ui; font-size: 44px; font-weight: 900; line-height: 1.1; margin: 0 0 20px; color: var(--blanco); display: none;" data-i18n="hero-title-en">
+                We Transform Creators into 
+                <span style="color: var(--fucsia);">Successful Brands</span>
+              </h1>
+              
+              <p style="font-family: 'Segoe UI Semibold', 'Segoe UI', system-ui; font-size: 22px; font-weight: 600; color: rgba(255,255,255,0.9); margin: 0 0 32px; line-height: 1.4;" data-i18n="hero-subtitle-es">
+                Agencia integral de TikTok con enfoque en resultados financieros, crecimiento sostenible y desarrollo empresarial
+              </p>
+              <p style="font-family: 'Segoe UI Semibold', 'Segoe UI', system-ui; font-size: 22px; font-weight: 600; color: rgba(255,255,255,0.9); margin: 0 0 32px; line-height: 1.4; display: none;" data-i18n="hero-subtitle-en">
+                Comprehensive TikTok agency focused on financial results, sustainable growth and business development
+              </p>
+              
+              <!-- PITCH DECK debajo del texto -->
+              <div style="display: flex; align-items: center; gap: 16px; margin-top: 20px;">
+                <div style="width: 60px; height: 4px; background: var(--gradiente); border-radius: 2px;"></div>
+                <span style="font-family: 'Franklin Gothic Medium', system-ui; font-size: 18px; color: var(--turquesa); font-weight: 600;">PITCH DECK</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lado derecho - Imagen -->
+          <div style="flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 80px;">
+            <img src="chico.png" alt="Tropitok Creator" style="height: 85%; width: auto; object-fit: contain; object-position: center;">
+            <!-- Overlay gradient para integrar mejor -->
+            <div style="position: absolute; top: 80px; left: 0; width: 100%; height: calc(100% - 80px); background: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 50%); pointer-events: none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: ROADMAP HORIZONTAL -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="index-title-es">Nuestro Proceso de Transformación</h2>
+        <h2 class="section-title" data-i18n="index-title-en" style="display:none">Our Transformation Process</h2>
+        
+        <p class="section-subtitle" data-i18n="index-subtitle-es">
+          7 etapas estratégicas para convertir creadores en marcas exitosas
+        </p>
+        <p class="section-subtitle" data-i18n="index-subtitle-en" style="display:none">
+          7 strategic stages to convert creators into successful brands
+        </p>
+
+        <!-- Roadmap horizontal -->
+        <div style="position: relative; max-width: 1400px; margin: 40px auto 0;">
+          
+          <!-- Líneas conectoras individuales -->
+          <!-- Línea 1-2 -->
+          <div style="position: absolute; top: 50%; left: calc(14.28% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, var(--fucsia), #ff4d6d); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          <!-- Línea 2-3 -->
+          <div style="position: absolute; top: 50%; left: calc(28.56% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, #ff4d6d, var(--fucsia)); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          <!-- Línea 3-4 -->
+          <div style="position: absolute; top: 50%; left: calc(42.84% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, var(--fucsia), var(--turquesa)); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          <!-- Línea 4-5 -->
+          <div style="position: absolute; top: 50%; left: calc(57.12% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, var(--turquesa), var(--fucsia)); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          <!-- Línea 5-6 -->
+          <div style="position: absolute; top: 50%; left: calc(71.4% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, var(--fucsia), var(--turquesa)); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          <!-- Línea 6-7 -->
+          <div style="position: absolute; top: 50%; left: calc(85.68% - 12px); width: calc(14.28% + 24px); height: 4px; background: linear-gradient(90deg, var(--turquesa), linear-gradient(135deg, var(--fucsia), var(--turquesa))); border-radius: 2px; transform: translateY(-50%); z-index: 1; box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);"></div>
+          
+          <!-- Contenedor de etapas -->
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 24px; position: relative; z-index: 2;">
+            
+            <!-- Etapa 1 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--fucsia); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">1</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--fucsia); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-1-es">Control Financiero</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-1-en">Financial Control</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-1-desc-es">Tracking de ingresos, cash flow y rentabilidad</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-1-desc-en">Revenue, cash flow and profitability tracking</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 0.4;">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <path d="M5 15L20 8L35 12L50 5L65 3L75 2" stroke="var(--fucsia)" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="5" cy="15" r="2" fill="var(--fucsia)"/>
+                    <circle cx="20" cy="8" r="2" fill="var(--fucsia)"/>
+                    <circle cx="35" cy="12" r="2" fill="var(--fucsia)"/>
+                    <circle cx="50" cy="5" r="2" fill="var(--fucsia)"/>
+                    <circle cx="75" cy="2" r="2" fill="var(--fucsia)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 2 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--turquesa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">2</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--turquesa); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-2-es">Captación Cross-Platform</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-2-en">Cross-Platform Recruitment</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-2-desc-es">Streamers, modelos, YouTubers y podcasters</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-2-desc-en">Streamers, models, YouTubers and podcasters</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 0.4;">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <rect x="5" y="8" width="8" height="10" rx="2" fill="var(--turquesa)"/>
+                    <rect x="18" y="5" width="8" height="13" rx="2" fill="var(--turquesa)"/>
+                    <rect x="31" y="3" width="8" height="15" rx="2" fill="var(--turquesa)"/>
+                    <rect x="44" y="6" width="8" height="12" rx="2" fill="var(--turquesa)"/>
+                    <rect x="57" y="4" width="8" height="14" rx="2" fill="var(--turquesa)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 3 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--fucsia); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">3</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--fucsia); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-3-es">Retención & Optimización</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-3-en">Retention & Optimization</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-3-desc-es">Seguimiento personalizado y optimización de contenido</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-3-desc-en">Personalized tracking and content optimization</p>
+                </div>
+                <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                  <div style="background: rgba(255, 0, 80, 0.1); border-radius: 6px; padding: 4px 2px; text-align: center;">
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px;" data-i18n="retention-item1-es">Edición</div>
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px; display: none;" data-i18n="retention-item1-en">Editing</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro);" data-i18n="retention-item1-desc-es">Shorts</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro); display: none;" data-i18n="retention-item1-desc-en">Shorts</div>
+                  </div>
+                  <div style="background: rgba(255, 0, 80, 0.1); border-radius: 6px; padding: 4px 2px; text-align: center;">
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px;" data-i18n="retention-item2-es">Promoción</div>
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px; display: none;" data-i18n="retention-item2-en">Promotion</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro);" data-i18n="retention-item2-desc-es">Cross-Platform</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro); display: none;" data-i18n="retention-item2-desc-en">Cross-Platform</div>
+                  </div>
+                  <div style="background: rgba(255, 0, 80, 0.1); border-radius: 6px; padding: 4px 2px; text-align: center;">
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px;" data-i18n="retention-item3-es">Moderación</div>
+                    <div style="font-size: 10px; font-weight: 600; color: var(--fucsia); margin-bottom: 2px; display: none;" data-i18n="retention-item3-en">Moderation</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro);" data-i18n="retention-item3-desc-es">Chat</div>
+                    <div style="font-size: 8px; color: var(--gris-oscuro); display: none;" data-i18n="retention-item3-desc-en">Chat</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 4 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--turquesa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">4</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--turquesa); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-4-es">Estrategias de Viralidad</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-4-en">Virality Strategies</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-4-desc-es">Información privilegiada de trends y contenido multilingüe</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-4-desc-en">Privileged trend information and multilingual content</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 0.4;">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <path d="M40 3L43 9L49 9L44 13L46 19L40 16L34 19L36 13L31 9L37 9L40 3Z" fill="var(--turquesa)"/>
+                    <circle cx="15" cy="15" r="2" fill="var(--turquesa)" opacity="0.7"/>
+                    <circle cx="65" cy="8" r="1.5" fill="var(--turquesa)" opacity="0.7"/>
+                    <circle cx="70" cy="15" r="1" fill="var(--turquesa)" opacity="0.7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 5 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--fucsia); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">5</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--fucsia); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-5-es">Research & Ideas</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-5-en">Research & Ideas</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-5-desc-es">Análisis de mercado y tendencias</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-5-desc-en">Market analysis and trends</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 0.4;">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <rect x="10" y="14" width="12" height="4" rx="2" fill="var(--fucsia)"/>
+                    <rect x="25" y="10" width="12" height="8" rx="2" fill="var(--fucsia)"/>
+                    <rect x="40" y="6" width="12" height="12" rx="2" fill="var(--fucsia)"/>
+                    <rect x="55" y="8" width="12" height="10" rx="2" fill="var(--fucsia)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 6 -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; background: var(--turquesa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">6</span>
+              </div>
+              <div style="background: var(--blanco); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid var(--turquesa); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-6-es">Representación Integral</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-6-en">Complete Representation</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-6-desc-es">Contratos con marcas y productos propios</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-6-desc-en">Brand contracts and own products</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 0.4;">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <rect x="5" y="5" width="15" height="10" rx="3" stroke="var(--turquesa)" stroke-width="1.5" fill="none"/>
+                    <rect x="25" y="7" width="12" height="6" rx="2" fill="var(--turquesa)"/>
+                    <rect x="42" y="4" width="18" height="12" rx="3" stroke="var(--turquesa)" stroke-width="1.5" fill="none"/>
+                    <circle cx="70" cy="10" r="4" fill="var(--turquesa)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 7 -->
+            <div style="text-align: center; position: relative; z-index: 5;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--fucsia), var(--turquesa)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--sombra); margin: 0 auto 20px; border: 4px solid var(--blanco); outline: 2px solid rgba(128, 128, 128, 0.3); position: relative; z-index: 3;">
+                <span style="color: var(--negro); font-family: 'Arial Black', system-ui; font-size: 18px; font-weight: 900;">7</span>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(255,0,80,0.05), rgba(0,245,235,0.05)); border-radius: 16px; padding: 18px 12px; box-shadow: var(--sombra); border-top: 4px solid transparent; border-image: var(--gradiente) 1; min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2;" data-i18n="roadmap-7-es">Desarrollo Empresarial</h3>
+                  <h3 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 15px; font-weight: 600; color: var(--negro); line-height: 1.2; display: none;" data-i18n="roadmap-7-en">Business Development</h3>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3;" data-i18n="roadmap-7-desc-es">De creators a empresarios exitosos</p>
+                  <p style="margin: 0; font-size: 12px; color: var(--gris-oscuro); line-height: 1.3; display: none;" data-i18n="roadmap-7-desc-en">From creators to successful entrepreneurs</p>
+                </div>
+                <div style="margin-top: 12px; opacity: 1; filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));">
+                  <svg width="100%" height="20" viewBox="0 0 80 20" fill="none">
+                    <path d="M40 2L45 8L52 8L47 12L49 18L40 15L31 18L33 12L28 8L35 8L40 2Z" fill="url(#grad1)" filter="url(#starGlow)"/>
+                    <rect x="10" y="8" width="8" height="4" rx="1" fill="var(--fucsia)" opacity="0.8"/>
+                    <rect x="62" y="10" width="6" height="6" rx="1" fill="var(--turquesa)" opacity="0.8"/>
+                    <defs>
+                      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:var(--fucsia)"/>
+                        <stop offset="100%" style="stop-color:var(--turquesa)"/>
+                      </linearGradient>
+                      <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SLIDE 3: INFORMACIÓN FINANCIERA -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="financial-title-es">Control Financiero Total</h2>
+        <h2 class="section-title" data-i18n="financial-title-en" style="display:none">Complete Financial Control</h2>
+        
+        <p class="section-subtitle" data-i18n="financial-subtitle-es">
+          Monitoreo completo de ingresos, gastos y flujo de caja para asegurar rentabilidad y transparencia
+        </p>
+        <p class="section-subtitle" data-i18n="financial-subtitle-en" style="display:none">
+          Complete monitoring of revenue, expenses and cash flow to ensure profitability and transparency
+        </p>
+
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <h3 data-i18n="fin-card1-title-es">Tracking de Ingresos</h3>
+            <h3 data-i18n="fin-card1-title-en" style="display:none">Revenue Tracking</h3>
+            <p data-i18n="fin-card1-desc-es">Control total de ingresos generales, por creador y por proyecto con verificación de pagos de TikTok</p>
+            <p data-i18n="fin-card1-desc-en" style="display:none">Complete control of general revenue, per creator and per project with TikTok payment verification</p>
+            <ul class="benefits">
+              <li data-i18n="fin-card1-b1-es">Transparencia total en números</li>
+              <li data-i18n="fin-card1-b1-en" style="display:none">Complete transparency in numbers</li>
+              <li data-i18n="fin-card1-b2-es">Detección inmediata de discrepancias</li>
+              <li data-i18n="fin-card1-b2-en" style="display:none">Immediate discrepancy detection</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M3 3v18h18"/>
+                <path d="m19 9-5 5-4-4-3 3"/>
+              </svg>
+            </div>
+            <h3 data-i18n="fin-card2-title-es">Gestión de Cash Flow</h3>
+            <h3 data-i18n="fin-card2-title-en" style="display:none">Cash Flow Management</h3>
+            <p data-i18n="fin-card2-desc-es">Aseguramos liquidez suficiente para operaciones y pagos puntuales de facturas</p>
+            <p data-i18n="fin-card2-desc-en" style="display:none">We ensure sufficient liquidity for operations and timely bill payments</p>
+            <ul class="benefits">
+              <li data-i18n="fin-card2-b1-es">Sin facturas impagas</li>
+              <li data-i18n="fin-card2-b1-en" style="display:none">No unpaid invoices</li>
+              <li data-i18n="fin-card2-b2-es">Estabilidad financiera garantizada</li>
+              <li data-i18n="fin-card2-b2-en" style="display:none">Guaranteed financial stability</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="m22 21-3-3m0 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="fin-card3-title-es">Análisis de Rentabilidad</h3>
+            <h3 data-i18n="fin-card3-title-en" style="display:none">Profitability Analysis</h3>
+            <p data-i18n="fin-card3-desc-es">Tracking de metas, presupuestos y reportes profesionales para inversionistas</p>
+            <p data-i18n="fin-card3-desc-en" style="display:none">Goal tracking, budgets and professional reports for investors</p>
+            <ul class="benefits">
+              <li data-i18n="fin-card3-b1-es">Metas claras y medibles</li>
+              <li data-i18n="fin-card3-b1-en" style="display:none">Clear and measurable goals</li>
+              <li data-i18n="fin-card3-b2-es">Estrategias basadas en datos</li>
+              <li data-i18n="fin-card3-b2-en" style="display:none">Data-driven strategies</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: CAPTACIÓN DE TALENTO -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="talent-title-es">Captación de Talento Cross-Platform</h2>
+        <h2 class="section-title" data-i18n="talent-title-en" style="display:none">Cross-Platform Talent Acquisition</h2>
+        
+        <p class="section-subtitle" data-i18n="talent-subtitle-es">
+          Reclutamos streamers, modelos, YouTubers y podcasters con fanbase establecida para maximizar el alcance en TikTok Live
+        </p>
+        <p class="section-subtitle" data-i18n="talent-subtitle-en" style="display:none">
+          We recruit streamers, models, YouTubers and podcasters with established fanbase to maximize reach on TikTok Live
+        </p>
+
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 11l-3-3 3-3"/>
+              </svg>
+            </div>
+            <h3 data-i18n="talent-card1-title-es">Streamers de Twitch y Plataformas</h3>
+            <h3 data-i18n="talent-card1-title-en" style="display:none">Twitch and Platform Streamers</h3>
+            <p data-i18n="talent-card1-desc-es">Creadores experimentados en transmisiones en vivo con audiencia fiel</p>
+            <p data-i18n="talent-card1-desc-en" style="display:none">Experienced live streaming creators with loyal audience</p>
+            <ul class="benefits">
+              <li data-i18n="talent-card1-b1-es">Experiencia comprobada</li>
+              <li data-i18n="talent-card1-b1-en" style="display:none">Proven experience</li>
+              <li data-i18n="talent-card1-b2-es">Fanbase existente</li>
+              <li data-i18n="talent-card1-b2-en" style="display:none">Existing fanbase</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="talent-card2-title-es">Modelos y Content Creators</h3>
+            <h3 data-i18n="talent-card2-title-en" style="display:none">Models and Content Creators</h3>
+            <p data-i18n="talent-card2-desc-es">Modelos de Instagram, OnlyFans y webcamers con experiencia en interacción directa</p>
+            <p data-i18n="talent-card2-desc-en" style="display:none">Instagram models, OnlyFans creators and webcammers with direct interaction experience</p>
+            <ul class="benefits">
+              <li data-i18n="talent-card2-b1-es">Habilidades de engagement</li>
+              <li data-i18n="talent-card2-b1-en" style="display:none">Engagement skills</li>
+              <li data-i18n="talent-card2-b2-es">Conocimiento de monetización</li>
+              <li data-i18n="talent-card2-b2-en" style="display:none">Monetization knowledge</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M15 6v12a3 3 0 1 0 3-3H9a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h9a3 3 0 1 0-3-3z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="talent-card3-title-es">YouTubers y Podcasters</h3>
+            <h3 data-i18n="talent-card3-title-en" style="display:none">YouTubers and Podcasters</h3>
+            <p data-i18n="talent-card3-desc-es">Transmisión de podcasts en vivo en TikTok, expandiendo su audiencia</p>
+            <p data-i18n="talent-card3-desc-en" style="display:none">Live podcast streaming on TikTok, expanding their audience</p>
+            <ul class="benefits">
+              <li data-i18n="talent-card3-b1-es">Contenido de calidad</li>
+              <li data-i18n="talent-card3-b1-en" style="display:none">Quality content</li>
+              <li data-i18n="talent-card3-b2-es">Audiencia establecida</li>
+              <li data-i18n="talent-card3-b2-en" style="display:none">Established audience</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature-grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px; justify-items: center; max-width: 800px;">
+          <div class="feature-item" style="background: rgba(0, 245, 235, 0.1);">
+            <h4 data-i18n="talent-feat2-title-es" style="color: var(--negro);">Migración de Audiencia</h4>
+            <h4 data-i18n="talent-feat2-title-en" style="display:none; color: var(--negro);">Audience Migration</h4>
+            <p data-i18n="talent-feat2-desc-es" style="color: var(--negro); opacity: 1;">Estrategias para trasladar seguidores de otras plataformas</p>
+            <p data-i18n="talent-feat2-desc-en" style="display:none; color: var(--negro); opacity: 1;">Strategies to move followers from other platforms</p>
+          </div>
+          <div class="feature-item" style="background: rgba(0, 245, 235, 0.1);">
+            <h4 data-i18n="talent-feat3-title-es" style="color: var(--negro);">Monetización Inmediata</h4>
+            <h4 data-i18n="talent-feat3-title-en" style="display:none; color: var(--negro);">Immediate Monetization</h4>
+            <p data-i18n="talent-feat3-desc-es" style="color: var(--negro); opacity: 1;">Aprovechamiento inmediato del talento existente para generar ingresos</p>
+            <p data-i18n="talent-feat3-desc-en" style="display:none; color: var(--negro); opacity: 1;">Immediate leveraging of existing talent to generate revenue</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: RETENCIÓN Y OPTIMIZACIÓN -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="retention-title-es">Retención y Optimización</h2>
+        <h2 class="section-title" data-i18n="retention-title-en" style="display:none">Retention and Optimization</h2>
+        
+        <p class="section-subtitle" data-i18n="retention-subtitle-es">
+          Seguimiento personalizado, feedback continuo y optimización de contenido para maximizar el crecimiento
+        </p>
+        <p class="section-subtitle" data-i18n="retention-subtitle-en" style="display:none">
+          Personalized tracking, continuous feedback and content optimization to maximize growth
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="retention-card1-title-es">Seguimiento Personalizado</h3>
+            <h3 data-i18n="retention-card1-title-en" style="display:none">Personalized Tracking</h3>
+            <p data-i18n="retention-card1-desc-es">Monitoreo constante del bienestar y satisfacción de nuestros creadores</p>
+            <p data-i18n="retention-card1-desc-en" style="display:none">Constant monitoring of our creators' well-being and satisfaction</p>
+            <ul class="benefits">
+              <li data-i18n="retention-card1-b1-es">Check-ins regulares de bienestar</li>
+              <li data-i18n="retention-card1-b1-en" style="display:none">Regular wellness check-ins</li>
+              <li data-i18n="retention-card1-b2-es">Feedback continuo y constructivo</li>
+              <li data-i18n="retention-card1-b2-en" style="display:none">Continuous and constructive feedback</li>
+              <li data-i18n="retention-card1-b3-es">Resolución proactiva de problemas</li>
+              <li data-i18n="retention-card1-b3-en" style="display:none">Proactive problem resolution</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M3 3v18h18"/>
+                <path d="m19 9-5 5-4-4-3 3"/>
+              </svg>
+            </div>
+            <h3 data-i18n="retention-card2-title-es">Optimización de Contenido</h3>
+            <h3 data-i18n="retention-card2-title-en" style="display:none">Content Optimization</h3>
+            <p data-i18n="retention-card2-desc-es">Análisis de mejores horarios, temas de conversación y dinámicas para maximizar engagement</p>
+            <p data-i18n="retention-card2-desc-en" style="display:none">Analysis of best schedules, conversation topics and dynamics to maximize engagement</p>
+            <ul class="benefits">
+              <li data-i18n="retention-card2-b1-es">Optimización de horarios de transmisión</li>
+              <li data-i18n="retention-card2-b1-en" style="display:none">Broadcast schedule optimization</li>
+              <li data-i18n="retention-card2-b2-es">Temas de conversación estratégicos</li>
+              <li data-i18n="retention-card2-b2-en" style="display:none">Strategic conversation topics</li>
+              <li data-i18n="retention-card2-b3-es">Dinámicas para aumentar interacción</li>
+              <li data-i18n="retention-card2-b3-en" style="display:none">Dynamics to increase interaction</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
+          <div style="background: rgba(255, 0, 80, 0.08); border-radius: 12px; padding: 16px; text-align: center; transition: all 0.2s ease;">
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia);" data-i18n="retention-feat1-title-es">Edición de Shorts</h4>
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia); display: none;" data-i18n="retention-feat1-title-en">Shorts Editing</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="retention-feat1-desc-es">Extraemos los mejores momentos de streams para crear shorts virales</p>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="retention-feat1-desc-en">We extract the best stream moments to create viral shorts</p>
+          </div>
+          <div style="background: rgba(255, 0, 80, 0.08); border-radius: 12px; padding: 16px; text-align: center; transition: all 0.2s ease;">
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia);" data-i18n="retention-feat2-title-es">Promoción Cross-Platform</h4>
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia); display: none;" data-i18n="retention-feat2-title-en">Cross-Platform Promotion</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="retention-feat2-desc-es">Promoción en múltiples redes sociales para aumentar alcance</p>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="retention-feat2-desc-en">Promotion across multiple social networks to increase reach</p>
+          </div>
+          <div style="background: rgba(255, 0, 80, 0.08); border-radius: 12px; padding: 16px; text-align: center; transition: all 0.2s ease;">
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia);" data-i18n="retention-feat3-title-es">Moderación de Chat</h4>
+            <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: var(--fucsia); display: none;" data-i18n="retention-feat3-title-en">Chat Moderation</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="retention-feat3-desc-es">Participación estratégica en chats para guiar conversaciones</p>
+            <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="retention-feat3-desc-en">Strategic chat participation to guide conversations</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: ESTRATEGIAS DE VIRALIDAD -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="viral-title-es">Estrategias de Viralidad</h2>
+        <h2 class="section-title" data-i18n="viral-title-en" style="display:none">Virality Strategies</h2>
+        
+        <p class="section-subtitle" data-i18n="viral-subtitle-es">
+          Acceso a información privilegiada de tendencias y estrategias avanzadas para maximizar el alcance viral
+        </p>
+        <p class="section-subtitle" data-i18n="viral-subtitle-en" style="display:none">
+          Access to privileged trend information and advanced strategies to maximize viral reach
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card highlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="viral-card1-title-es">Información Privilegiada de Trends</h3>
+            <h3 data-i18n="viral-card1-title-en" style="display:none">Privileged Trend Intelligence</h3>
+            <p data-i18n="viral-card1-desc-es">Acceso temprano a contenido que se vuelve viral en X, Reddit y canales de noticias antes de que llegue a TikTok</p>
+            <p data-i18n="viral-card1-desc-en" style="display:none">Early access to content that goes viral on X, Reddit and news channels before it reaches TikTok</p>
+            <ul class="benefits">
+              <li data-i18n="viral-card1-b1-es">Ventaja competitiva en tendencias</li>
+              <li data-i18n="viral-card1-b1-en" style="display:none">Competitive advantage in trends</li>
+              <li data-i18n="viral-card1-b2-es">Contenido anticipado y relevante</li>
+              <li data-i18n="viral-card1-b2-en" style="display:none">Anticipated and relevant content</li>
+              <li data-i18n="viral-card1-b3-es">Mayor probabilidad de viralidad</li>
+              <li data-i18n="viral-card1-b3-en" style="display:none">Higher probability of virality</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="viral-card2-title-es">Contenido Multilingüe</h3>
+            <h3 data-i18n="viral-card2-title-en" style="display:none">Multilingual Content</h3>
+            <p data-i18n="viral-card2-desc-es">Estrategias de contenido adaptadas para múltiples idiomas y mercados internacionales</p>
+            <p data-i18n="viral-card2-desc-en" style="display:none">Content strategies adapted for multiple languages and international markets</p>
+            <ul class="benefits">
+              <li data-i18n="viral-card2-b1-es">Alcance global expandido</li>
+              <li data-i18n="viral-card2-b1-en" style="display:none">Expanded global reach</li>
+              <li data-i18n="viral-card2-b2-es">Adaptación cultural del contenido</li>
+              <li data-i18n="viral-card2-b2-en" style="display:none">Cultural content adaptation</li>
+              <li data-i18n="viral-card2-b3-es">Diversificación de audiencias</li>
+              <li data-i18n="viral-card2-b3-en" style="display:none">Audience diversification</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
+          <div style="background: var(--blanco); border: 2px solid #ff6b35; border-radius: 12px; padding: 20px; box-shadow: var(--sombra); transition: all 0.2s ease; display: flex; align-items: flex-start; gap: 12px;">
+            <div style="width: 30px; height: 30px; background: #ff6b35; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 2L2 12l10 10 10-10L12 2z"/>
+                <path d="M8 12h8"/>
+                <path d="m12 8-4 4 4 4"/>
+              </svg>
+            </div>
+            <div>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #ff6b35;" data-i18n="viral-feat1-title-es">Prevención de Baneos</h4>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #ff6b35; display: none;" data-i18n="viral-feat1-title-en">Ban Prevention</h4>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="viral-feat1-desc-es">Monitoreo del algoritmo y respuesta rápida ante restricciones</p>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="viral-feat1-desc-en">Algorithm monitoring and quick response to restrictions</p>
+            </div>
+          </div>
+          
+          <div style="background: var(--blanco); border: 2px solid #00d4aa; border-radius: 12px; padding: 20px; box-shadow: var(--sombra); transition: all 0.2s ease; display: flex; align-items: flex-start; gap: 12px;">
+            <div style="width: 30px; height: 30px; background: #00d4aa; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+                <rect x="8" y="8" width="6" height="2" rx="1" fill="white"/>
+                <rect x="8" y="12" width="4" height="2" rx="1" fill="white"/>
+              </svg>
+            </div>
+            <div>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #00d4aa;" data-i18n="viral-feat2-title-es">SEO y Presencia Web</h4>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #00d4aa; display: none;" data-i18n="viral-feat2-title-en">SEO & Web Presence</h4>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="viral-feat2-desc-es">Posicionamiento para aparecer primero en "agencias TikTok"</p>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="viral-feat2-desc-en">Positioning to appear first for "TikTok agencies"</p>
+            </div>
+          </div>
+          
+          <div style="background: var(--blanco); border: 2px solid #8b5cf6; border-radius: 12px; padding: 20px; box-shadow: var(--sombra); transition: all 0.2s ease; display: flex; align-items: flex-start; gap: 12px;">
+            <div style="width: 30px; height: 30px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 2L2 12l10 10 10-10L12 2z"/>
+                <path d="M8 8h8"/>
+                <path d="M8 12h8"/>
+                <path d="M8 16h8"/>
+              </svg>
+            </div>
+            <div>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #8b5cf6;" data-i18n="viral-feat3-title-es">Algoritmo TikTok</h4>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 16px; font-weight: 600; color: #8b5cf6; display: none;" data-i18n="viral-feat3-title-en">TikTok Algorithm</h4>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4;" data-i18n="viral-feat3-desc-es">Entendimiento profundo para optimizar el alcance</p>
+              <p style="margin: 0; font-size: 13px; color: var(--gris-oscuro); line-height: 1.4; display: none;" data-i18n="viral-feat3-desc-en">Deep understanding to optimize reach</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: RESEARCH & ANÁLISIS -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="research-title-es">Research & Análisis de Mercado</h2>
+        <h2 class="section-title" data-i18n="research-title-en" style="display:none">Research & Market Analysis</h2>
+        
+        <p class="section-subtitle" data-i18n="research-subtitle-es">
+          Análisis profundo de tendencias globales y mercados potenciales para generar estrategias basadas en datos
+        </p>
+        <p class="section-subtitle" data-i18n="research-subtitle-en" style="display:none">
+          Deep analysis of global trends and potential markets to generate data-based strategies
+        </p>
+
+        <!-- TikTok Statistics Collage -->
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
+          <!-- Top Row: Key Statistics Images -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112609.png" alt="TikTok Users by Gender" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;">
+            </div>
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112636.png" alt="TikTok Users by Age" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;">
+            </div>
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112415.png" alt="TikTok User Demographics" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;">
+            </div>
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112648.png" alt="TikTok Ad Revenue" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;">
+            </div>
+          </div>
+          
+          <!-- Bottom Row: Main Analytics -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 12px;">
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112345.png" alt="TikTok Creators by Age" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px;">
+            </div>
+            <div style="background: var(--blanco); border-radius: 12px; padding: 8px; box-shadow: var(--sombra); overflow: hidden;">
+              <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112600.png" alt="TikTok Users by Country" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px;">
+            </div>
+            <!-- Key Insights Compact -->
+            <div style="background: var(--blanco); border-radius: 12px; padding: 12px; box-shadow: var(--sombra); border-left: 4px solid var(--turquesa);">
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 14px; font-weight: 600; color: var(--negro);" data-i18n="research-summary-title-es">Insights Clave</h4>
+              <h4 style="margin: 0 0 8px; font-family: 'Franklin Gothic Medium', system-ui; font-size: 14px; font-weight: 600; color: var(--negro); display: none;" data-i18n="research-summary-title-en">Key Insights</h4>
+              <div style="font-size: 11px; line-height: 1.3; color: var(--gris-oscuro);">
+                <div style="margin-bottom: 6px;">
+                  <strong style="color: var(--turquesa);" data-i18n="research-compact-1-es">• 60% creadores: 18-24 años</strong>
+                  <strong style="color: var(--turquesa); display: none;" data-i18n="research-compact-1-en">• 60% creators: 18-24 years</strong>
+                </div>
+                <div style="margin-bottom: 6px;">
+                  <strong style="color: var(--turquesa);" data-i18n="research-compact-2-es">• Colombia: 32M usuarios activos</strong>
+                  <strong style="color: var(--turquesa); display: none;" data-i18n="research-compact-2-en">• Colombia: 32M active users</strong>
+                </div>
+                <div style="margin-bottom: 6px;">
+                  <strong style="color: var(--turquesa);" data-i18n="research-compact-3-es">• Ingresos: +140% anual</strong>
+                  <strong style="color: var(--turquesa); display: none;" data-i18n="research-compact-3-en">• Revenue: +140% annual</strong>
+                </div>
+                <div>
+                  <strong style="color: var(--turquesa);" data-i18n="research-compact-4-es">• Proyección 2027: $54B</strong>
+                  <strong style="color: var(--turquesa); display: none;" data-i18n="research-compact-4-en">• 2027 Projection: $54B</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Colombia Specific Data -->
+          <div style="background: var(--blanco); border-radius: 12px; padding: 10px; box-shadow: var(--sombra); overflow: hidden;">
+            <img src="images_tiktok_data/Captura de pantalla 2025-08-11 112946.png" alt="TikTok Colombia Statistics" style="width: 100%; height: 100px; object-fit: cover; border-radius: 6px;">
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: IDEAS INNOVADORAS -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="ideas-title-es" style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--turquesa);">
+            <path d="m9.937 15.5-.5-3m0 0 .5-3m-.5 3h-3m3 0h3m6-1a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            <path d="M9 12h6"/>
+            <circle cx="15" cy="9" r="1"/>
+          </svg>
+          Ideas Innovadoras
+        </h2>
+        <h2 class="section-title" data-i18n="ideas-title-en" style="display:none; align-items: center; justify-content: center; gap: 12px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--turquesa);">
+            <path d="m9.937 15.5-.5-3m0 0 .5-3m-.5 3h-3m3 0h3m6-1a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            <path d="M9 12h6"/>
+            <circle cx="15" cy="9" r="1"/>
+          </svg>
+          Innovative Ideas
+        </h2>
+        
+        <p class="section-subtitle" data-i18n="ideas-subtitle-es">
+          Proyectos creativos y estrategias disruptivas para maximizar el alcance y crear nuevas oportunidades
+        </p>
+        <p class="section-subtitle" data-i18n="ideas-subtitle-en" style="display:none">
+          Creative projects and disruptive strategies to maximize reach and create new opportunities
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat1-title-es">Reality Show "Casa de TikTokers"</h4>
+            <h4 data-i18n="ideas-feat1-title-en" style="display:none">"TikTokers House" Reality Show</h4>
+            <p data-i18n="ideas-feat1-desc-es">Formato reality similar a "La Casa de los Famosos" para impulsar alcance masivo</p>
+            <p data-i18n="ideas-feat1-desc-en" style="display:none">Reality format similar to "Big Brother" to boost massive reach</p>
+          </div>
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat2-title-es">Subsidio de Internet</h4>
+            <h4 data-i18n="ideas-feat2-title-en" style="display:none">Internet Subsidy</h4>
+            <p data-i18n="ideas-feat2-desc-es">Apoyo financiero para internet de alta velocidad para top creators</p>
+            <p data-i18n="ideas-feat2-desc-en" style="display:none">Financial support for high-speed internet for top creators</p>
+          </div>
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat3-title-es">Plan de Incentivos</h4>
+            <h4 data-i18n="ideas-feat3-title-en" style="display:none">Incentive Plan</h4>
+            <p data-i18n="ideas-feat3-desc-es">Sistema de recompensas y reconocimientos para impulsar el crecimiento</p>
+            <p data-i18n="ideas-feat3-desc-en" style="display:none">Reward and recognition system to boost growth</p>
+          </div>
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat4-title-es">Contratos con Marcas</h4>
+            <h4 data-i18n="ideas-feat4-title-en" style="display:none">Brand Partnerships</h4>
+            <p data-i18n="ideas-feat4-desc-es">Partnerships estratégicos y activaciones con marcas reconocidas</p>
+            <p data-i18n="ideas-feat4-desc-en" style="display:none">Strategic partnerships and activations with recognized brands</p>
+          </div>
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat5-title-es">Gaming Competitions</h4>
+            <h4 data-i18n="ideas-feat5-title-en" style="display:none">Gaming Competitions</h4>
+            <p data-i18n="ideas-feat5-desc-es">Torneos con premios de consolas y juegos para creators</p>
+            <p data-i18n="ideas-feat5-desc-en" style="display:none">Tournaments with console and game prizes for creators</p>
+          </div>
+          <div class="feature-item">
+            <h4 data-i18n="ideas-feat6-title-es">Contenido Colaborativo</h4>
+            <h4 data-i18n="ideas-feat6-title-en" style="display:none">Collaborative Content</h4>
+            <p data-i18n="ideas-feat6-desc-es">Espacios para crear contenido colaborativo entre creators</p>
+            <p data-i18n="ideas-feat6-desc-en" style="display:none">Spaces to create collaborative content between creators</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: REPRESENTACIÓN INTEGRAL -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="representation-title-es">Representación Integral</h2>
+        <h2 class="section-title" data-i18n="representation-title-en" style="display:none">Complete Representation</h2>
+        
+        <p class="section-subtitle" data-i18n="representation-subtitle-es">
+          Más que una agencia: gestión completa de contratos, merchandising y desarrollo de marcas personales
+        </p>
+        <p class="section-subtitle" data-i18n="representation-subtitle-en" style="display:none">
+          More than an agency: complete management of contracts, merchandise and personal brand development
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card highlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="representation-card1-title-es">Gestión de Contratos y Marcas</h3>
+            <h3 data-i18n="representation-card1-title-en" style="display:none">Contract and Brand Management</h3>
+            <p data-i18n="representation-card1-desc-es">Negociación y gestión de contratos con marcas, desarrollo de merchandising personalizado</p>
+            <p data-i18n="representation-card1-desc-en" style="display:none">Negotiation and management of brand contracts, personalized merchandise development</p>
+            <ul class="benefits">
+              <li data-i18n="representation-card1-b1-es">Negociación profesional de contratos</li>
+              <li data-i18n="representation-card1-b1-en" style="display:none">Professional contract negotiation</li>
+              <li data-i18n="representation-card1-b2-es">Desarrollo de merchandising único</li>
+              <li data-i18n="representation-card1-b2-en" style="display:none">Unique merchandise development</li>
+              <li data-i18n="representation-card1-b3-es">Diversificación de ingresos</li>
+              <li data-i18n="representation-card1-b3-en" style="display:none">Revenue diversification</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+              </svg>
+            </div>
+            <h3 data-i18n="representation-card2-title-es">Desarrollo de Productos Propios</h3>
+            <h3 data-i18n="representation-card2-title-en" style="display:none">Own Product Development</h3>
+            <p data-i18n="representation-card2-desc-es">Creación de productos personalizados: sets de cocina, líneas de maquillaje, productos únicos</p>
+            <p data-i18n="representation-card2-desc-en" style="display:none">Creation of personalized products: cookware sets, makeup lines, unique products</p>
+            <ul class="benefits">
+              <li data-i18n="representation-card2-b1-es">Productos exclusivos del creator</li>
+              <li data-i18n="representation-card2-b1-en" style="display:none">Creator's exclusive products</li>
+              <li data-i18n="representation-card2-b2-es">Marcas personales sólidas</li>
+              <li data-i18n="representation-card2-b2-en" style="display:none">Strong personal brands</li>
+              <li data-i18n="representation-card2-b3-es">Ingresos recurrentes a largo plazo</li>
+              <li data-i18n="representation-card2-b3-en" style="display:none">Long-term recurring income</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: DESARROLLO EMPRESARIAL -->
+      <section class="slide">
+        <div class="bg-decoration"></div>
+        <h2 class="section-title" data-i18n="business-title-es" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+          <svg class="golden-star" width="40" height="40" viewBox="0 0 24 24" fill="none" style="color: #FFD700;">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Desarrollo Empresarial
+        </h2>
+        <h2 class="section-title" data-i18n="business-title-en" style="display:none; align-items: center; justify-content: center; gap: 16px;">
+          <svg class="golden-star" width="40" height="40" viewBox="0 0 24 24" fill="none" style="color: #FFD700;">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Business Development
+        </h2>
+        
+        <p class="section-subtitle" data-i18n="business-subtitle-es">
+          Transformamos creadores en empresarios exitosos con empresas reales y sostenibles
+        </p>
+        <p class="section-subtitle" data-i18n="business-subtitle-en" style="display:none">
+          We transform creators into successful entrepreneurs with real and sustainable companies
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </div>
+            <h3 data-i18n="business-card1-title-es">Formación de Empresas</h3>
+            <h3 data-i18n="business-card1-title-en" style="display:none">Company Formation</h3>
+            <p data-i18n="business-card1-desc-es">Ayudamos a crear empresas reales en diversos sectores: gastronomía, belleza, entretenimiento</p>
+            <p data-i18n="business-card1-desc-en" style="display:none">We help create real companies in various sectors: gastronomy, beauty, entertainment</p>
+            <ul class="benefits">
+              <li data-i18n="business-card1-b1-es">Sets de cocina y productos gastronómicos</li>
+              <li data-i18n="business-card1-b1-en" style="display:none">Cookware sets and gastronomic products</li>
+              <li data-i18n="business-card1-b2-es">Líneas de maquillaje y belleza</li>
+              <li data-i18n="business-card1-b2-en" style="display:none">Makeup and beauty lines</li>
+              <li data-i18n="business-card1-b3-es">Productos de estilo de vida</li>
+              <li data-i18n="business-card1-b3-en" style="display:none">Lifestyle products</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+              </svg>
+            </div>
+            <h3 data-i18n="business-card2-title-es">Entretenimiento y Música</h3>
+            <h3 data-i18n="business-card2-title-en" style="display:none">Entertainment and Music</h3>
+            <p data-i18n="business-card2-desc-es">Producción musical, giras de conciertos y desarrollo de talento artístico</p>
+            <p data-i18n="business-card2-desc-en" style="display:none">Music production, concert tours and artistic talent development</p>
+            <ul class="benefits">
+              <li data-i18n="business-card2-b1-es">Producción musical profesional</li>
+              <li data-i18n="business-card2-b1-en" style="display:none">Professional music production</li>
+              <li data-i18n="business-card2-b2-es">Organización de giras y conciertos</li>
+              <li data-i18n="business-card2-b2-en" style="display:none">Tour and concert organization</li>
+              <li data-i18n="business-card2-b3-es">Desarrollo de carrera artística</li>
+              <li data-i18n="business-card2-b3-en" style="display:none">Artistic career development</li>
+            </ul>
+          </div>
+        </div>
+
+          <div class="card" style="margin-top: 16px; text-align: center; background: var(--gradiente-suave);">
+          <h4 style="margin: 0 0 8px; color: var(--negro); font-family: 'Franklin Gothic Medium', 'Segoe UI Semibold', system-ui; font-size: 16px; font-weight: 600;" data-i18n="business-example-es">
+            <strong>Caso de Éxito:</strong> "El Borrego" en Shark Tank Colombia - De Creator a Empresario Exitoso
+          </h4>
+          <h4 style="margin: 0 0 8px; color: var(--negro); font-family: 'Franklin Gothic Medium', 'Segoe UI Semibold', system-ui; font-size: 16px; font-weight: 600; display: none;" data-i18n="business-example-en">
+            <strong>Success Case:</strong> "El Borrego" on Shark Tank Colombia - From Creator to Successful Entrepreneur
+          </h4>
+          <p style="margin: 0; color: var(--negro); font-family: 'Segoe UI', system-ui; font-size: 13px;" data-i18n="business-example-desc-es">
+            Nuestro objetivo es replicar este modelo: llevar a nuestros creadores desde el contenido hasta empresas reales y sostenibles que trasciendan TikTok
+          </p>
+          <p style="margin: 0; color: var(--negro); font-family: 'Segoe UI', system-ui; font-size: 13px; display: none;" data-i18n="business-example-desc-en">
+            Our goal is to replicate this model: take our creators from content to real and sustainable companies that transcend TikTok
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Navegación -->
+    <div class="nav">
+      <button class="nav-btn" id="prev-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      
+      <div class="progress">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      
+      <div class="slide-counter" id="slide-counter">1/10</div>
+      
+      <button class="nav-btn" id="next-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.getElementById('slides');
+      const totalSlides = slides.children.length;
+      const progressFill = document.getElementById('progress-fill');
+      const slideCounter = document.getElementById('slide-counter');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const header = document.querySelector('.header');
+      
+      let currentSlide = 0;
+
+      function updateSlide() {
+        slides.style.transform = `translateX(${-currentSlide * 100}%)`;
+        const progress = ((currentSlide + 1) / totalSlides) * 100;
+        progressFill.style.width = `${progress}%`;
+        slideCounter.textContent = `${currentSlide + 1}/${totalSlides}`;
+        
+        // Update button states
+        prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = currentSlide === totalSlides - 1 ? '0.5' : '1';
+        
+        // Show/hide header based on slide
+        if (currentSlide === 0) {
+          header.classList.add('hidden');
+        } else {
+          header.classList.remove('hidden');
+        }
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlide();
+        }
+      }
+
+      // Event listeners
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevSlide();
+        }
+      });
+
+      // Language toggle
+      const btnEs = document.getElementById('btn-es');
+      const btnEn = document.getElementById('btn-en');
+      const btnEsHome = document.getElementById('btn-es-home');
+      const btnEnHome = document.getElementById('btn-en-home');
+
+      function setLanguage(lang) {
+        document.documentElement.setAttribute('data-lang', lang);
+        
+        // Update header buttons if they exist
+        if (btnEs && btnEn) {
+          btnEs.classList.toggle('active', lang === 'es');
+          btnEn.classList.toggle('active', lang === 'en');
+        }
+        
+        // Update homepage buttons if they exist
+        if (btnEsHome && btnEnHome) {
+          btnEsHome.classList.toggle('active', lang === 'es');
+          btnEnHome.classList.toggle('active', lang === 'en');
+        }
+        
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          const isEnglish = key.endsWith('-en');
+          const isSpanish = key.endsWith('-es');
+          
+          if (lang === 'es') {
+            el.style.display = isSpanish ? '' : 'none';
+          } else {
+            el.style.display = isEnglish ? '' : 'none';
+          }
+        });
+      }
+
+      // Add event listeners for header buttons if they exist
+      if (btnEs && btnEn) {
+        btnEs.addEventListener('click', () => setLanguage('es'));
+        btnEn.addEventListener('click', () => setLanguage('en'));
+      }
+      
+      // Add event listeners for homepage buttons if they exist
+      if (btnEsHome && btnEnHome) {
+        btnEsHome.addEventListener('click', () => setLanguage('es'));
+        btnEnHome.addEventListener('click', () => setLanguage('en'));
+      }
+
+      // Fullscreen functionality
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+      
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+      
+      // Update fullscreen icon based on state
+      document.addEventListener('fullscreenchange', () => {
+        const icon = fullscreenBtn.querySelector('svg');
+        if (document.fullscreenElement) {
+          // Exit fullscreen icon
+          icon.innerHTML = `
+            <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
+            <path d="m3 3 6 6"/>
+            <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+            <path d="m21 3-6 6"/>
+            <path d="M8 21v-3a2 2 0 0 0-2-2H3"/>
+            <path d="m3 21 6-6"/>
+            <path d="M21 16h-3a2 2 0 0 0-2 2v3"/>
+            <path d="m21 21-6-6"/>
+          `;
+        } else {
+          // Enter fullscreen icon
+          icon.innerHTML = `
+            <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
+            <path d="M3 16.2V21m0 0h4.8M3 21l6-6"/>
+            <path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/>
+            <path d="M3 7.8V3m0 0h4.8M3 3l6 6"/>
+          `;
+        }
+      });
+
+      // Initialize
+      updateSlide();
+      setLanguage('es');
+    })();
+  </script>
+</body>
+</html>
