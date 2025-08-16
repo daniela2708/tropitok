@@ -1653,24 +1653,33 @@
       }
 
       // Fullscreen functionality
-      const fullscreenBtn = document.getElementById('fullscreen-btn');
-      
+      const fullscreenBtns = document.querySelectorAll('.fullscreen-btn');
+
       function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
+        const docEl = document.documentElement;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (docEl.requestFullscreen) {
+            docEl.requestFullscreen();
+          } else if (docEl.webkitRequestFullscreen) {
+            docEl.webkitRequestFullscreen();
+          }
         } else {
-          document.exitFullscreen();
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
         }
       }
-      
-      fullscreenBtn.addEventListener('click', toggleFullscreen);
-      
-      // Update fullscreen icon based on state
-      document.addEventListener('fullscreenchange', () => {
-        const icon = fullscreenBtn.querySelector('svg');
-        if (document.fullscreenElement) {
-          // Exit fullscreen icon
-          icon.innerHTML = `
+
+      fullscreenBtns.forEach(btn => btn.addEventListener('click', toggleFullscreen));
+
+      function updateFullscreenIcons() {
+        fullscreenBtns.forEach(btn => {
+          const icon = btn.querySelector('svg');
+          if (document.fullscreenElement || document.webkitFullscreenElement) {
+            // Exit fullscreen icon
+            icon.innerHTML = `
             <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
             <path d="m3 3 6 6"/>
             <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
@@ -1679,17 +1688,22 @@
             <path d="m3 21 6-6"/>
             <path d="M21 16h-3a2 2 0 0 0-2 2v3"/>
             <path d="m21 21-6-6"/>
-          `;
-        } else {
-          // Enter fullscreen icon
-          icon.innerHTML = `
+            `;
+          } else {
+            // Enter fullscreen icon
+            icon.innerHTML = `
             <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
             <path d="M3 16.2V21m0 0h4.8M3 21l6-6"/>
             <path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/>
             <path d="M3 7.8V3m0 0h4.8M3 3l6 6"/>
-          `;
-        }
-      });
+            `;
+          }
+        });
+      }
+
+      // Update fullscreen icon based on state
+      document.addEventListener('fullscreenchange', updateFullscreenIcons);
+      document.addEventListener('webkitfullscreenchange', updateFullscreenIcons);
 
       // Initialize
       updateSlide();
